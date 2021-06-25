@@ -31,8 +31,16 @@ from fvcore.nn import FlopCountAnalysis
 
 
 class Objective:
+    ''' The objective Class for the Optuna studies'''
 
     def __init__(self, train_data, test_data, dev_data, models_dir, MOO=True):
+        '''
+        train_data : the training dataloader
+        test_data : the test dataloader
+        dev_data : the dev dataloader
+        models_dir : the location where models should be saved
+        MOO : boolean value indicating whether it is a multiobjective trial'''
+
         self.train_data = train_data
         self.test_data = test_data
         self.dev_data = dev_data
@@ -40,10 +48,16 @@ class Objective:
         self.MOO = MOO
 
     def __call__(self, trial):
+        ''' The function called by the Optuna study the trial object carries the hyperparameters which are  used to train the model
+
+        Returns: the PCC if MOO = False
+        Returns: the PCC and the FLOPS if MOO = True'''
 
         # freeing memory
         gc.collect()
         torch.cuda.empty_cache()
+
+        # assigning the hyperparameters
 
         EMBEDDING_DIM = trial.suggest_int('embedding_dim', 48, 248, 8)
         HIDDEN_DIM = trial.suggest_int('hidden_dim', 48, 248, 8)
@@ -73,7 +87,7 @@ class Objective:
             model, (self.train_data, self.test_data, self.dev_data), self.models_dir, loss_function, optimizer, EPOCH, batch_size)
 
         flops = flop_count(model, self.test_data)
-
+        #setting the user attributes these are for investigating the results
         trial.set_user_attr("Epochs to converge", best_epoch+1)
         trial.set_user_attr("test_pearson", best_test_pearson)
         trial.set_user_attr("Flops", flops)
@@ -85,6 +99,12 @@ class Objective:
 
 
 def flop_count(model, data):
+    ''' a function for counting the FLOPS
+    model: the SiameseQE model
+    data: the dataloader on which to evaluate the model on
+
+    Returns:  an integer respresenting the number of FLOPS
+    '''
 
     if deviceid > -1:
         model.cuda()
@@ -118,6 +138,22 @@ def flop_count(model, data):
 
 
 def train(model, dataset, models_dir, loss_function, optimizer, EPOCH, batch_size):
+    ''' The training function of the model
+
+    model: the siameseQE model instance
+    dataset: a tuple of the train, test, dev dataloader
+    models_dir: the directory where models shall be saved
+    loss_function: the loss function to be used
+    optimizer: the optimizer to be used
+    EPOCH: the number of epoch to train for
+    batch_size: the batch_size
+
+    Returns:
+    best_dev_pearson: the PCC of the best epoch
+    best_test_pearson: the PCC of the best epoch in terms of dev score
+    best_epoch : the best epoch in terms of dev score
+
+'''
 
     train_data, test_data, dev_data = dataset
 
@@ -161,6 +197,18 @@ def train(model, dataset, models_dir, loss_function, optimizer, EPOCH, batch_siz
 
 
 def train_epoch(model, train_data, loss_function, optimizer, batch_size, deviceid=-1):
+    ''' Training the model for 1 epoch
+
+    train_data: the training dataloader
+    loss_function: the loss function
+    optimizer: the optimizer
+    batch_size: the batch_size
+    deviceid: the deviceid for
+
+    Returns:
+    loss.item(): the loss for the epoch
+
+'''
 
     # enable training mode
     model.train()
@@ -173,9 +221,8 @@ def train_epoch(model, train_data, loss_function, optimizer, batch_size, devicei
     total_acc = 0.0
     total_loss = 0.0
 
-# run with evaluation
     for iter, traindata in enumerate(dataloader):
-        # code_iteration_to_profiler(iter)
+
         train_src, _train_src_length, train_trg, _train_trg_length, train_labels, _train_labels_length = traindata
         train_labels = torch.squeeze(train_labels)
         if deviceid > -1:
@@ -205,6 +252,20 @@ def train_epoch(model, train_data, loss_function, optimizer, batch_size, devicei
 
 
 def evaluate(model, data, loss_function, name='dev', deviceid=-1):
+    ''' evaluates the model on the data passed to the function
+
+    data: the dataloader to evaluate the model on
+    loss_function: the loss function for the model
+    name: the name of the dataset
+    deviceid: the deviceid to evaluate on
+
+    returns:
+    pearson: the PCC score for the data
+    mae: the mean absolute error on the data
+    rmse: the root mean squared error on the data
+    test_label_list: the list of predictions on the data
+
+ '''
     epoch = 1
     model.eval()
     rmse = 0.0
@@ -265,6 +326,11 @@ def evaluate(model, data, loss_function, name='dev', deviceid=-1):
 
 
 def env_setup():
+    ''' loading the data into the dataloders
+
+    Returns: a tuple of the train, test and dev data toghether with the models directory
+
+    '''
 
     source_train_filename = data_path / ('train.' + source_ext)
     target_train_filename = data_path / ('train.' + target_ext)
