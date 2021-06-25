@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{all\PYGZus{}hv} \PYG{o}{=} \PYG{n}{pygmo}\PYG{o}{.}\PYG{n}{hypervolume}\PYG{p}{(}\PYG{n}{all\PYGZus{}test\PYGZus{}objectives}\PYG{p}{)}
+\PYG{n}{reference\PYGZus{}point} \PYG{o}{=} \PYG{n}{all\PYGZus{}hv}\PYG{o}{.}\PYG{n}{refpoint}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}
+\end{Verbatim}

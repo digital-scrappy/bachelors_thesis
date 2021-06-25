@@ -1,0 +1,45 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{pandas} \PYG{k}{as} \PYG{n+nn}{pd}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib.pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+\PYG{k+kn}{import} \PYG{n+nn}{seaborn} \PYG{k}{as} \PYG{n+nn}{sns}
+
+\PYG{c+c1}{\PYGZsh{} def append\PYGZus{}hv\PYGZus{}history\PYGZus{}to\PYGZus{}df(study):}
+\PYG{c+c1}{\PYGZsh{}     row\PYGZus{}dict = \PYGZob{}\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}: study.sampler\PYGZus{}type, \PYGZsq{}sampler\PYGZus{}name\PYGZsq{}:study.name, \PYGZsq{}iteration\PYGZsq{} : 0, \PYGZsq{}hypervolume\PYGZsq{} : 0.0\PYGZcb{}}
+\PYG{c+c1}{\PYGZsh{}     df = pd.DataFrame(row\PYGZus{}dict)}
+\PYG{c+c1}{\PYGZsh{}     for index, hv in enumerate(study.hv\PYGZus{}history):}
+\PYG{c+c1}{\PYGZsh{}         row\PYGZus{}dict = \PYGZob{}\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}: study.sampler\PYGZus{}type, \PYGZsq{}sampler\PYGZus{}name\PYGZsq{}:study.name, \PYGZsq{}iteration\PYGZsq{} : index + 1, \PYGZsq{}hypervolume\PYGZsq{} : hv\PYGZcb{}}
+\PYG{c+c1}{\PYGZsh{}         df = df.append(\PYGZob{}\PYGZsq{}sampler\PYGZus{}name\PYGZsq{}:study.name, \PYGZsq{}iteration\PYGZsq{} : index + 1, \PYGZsq{}hypervolume\PYGZsq{} : hv\PYGZcb{}, ignore\PYGZus{}index = True)}
+
+\PYG{c+c1}{\PYGZsh{}     return df}
+\PYG{n}{hv\PYGZus{}history}\PYG{o}{=} \PYG{k+kc}{None}
+
+\PYG{k}{def} \PYG{n+nf}{hv\PYGZus{}history\PYGZus{}to\PYGZus{}df}\PYG{p}{(}\PYG{n}{study}\PYG{p}{):}
+    \PYG{n}{df} \PYG{o}{=} \PYG{k+kc}{None}
+    \PYG{n}{row\PYGZus{}dict} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{:} \PYG{p}{[}\PYG{n}{study}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}iteration\PYGZsq{}} \PYG{p}{:} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}} \PYG{p}{:} \PYG{p}{[}\PYG{l+m+mf}{0.0}\PYG{p}{]\PYGZcb{}}
+    \PYG{n}{df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}\PYG{n}{data} \PYG{o}{=} \PYG{n}{row\PYGZus{}dict}\PYG{p}{)}
+    \PYG{k}{for} \PYG{n}{index}\PYG{p}{,} \PYG{n}{hv} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{study}\PYG{o}{.}\PYG{n}{hv\PYGZus{}history}\PYG{p}{):}
+        \PYG{n}{row\PYGZus{}dict} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{:} \PYG{n}{study}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}iteration\PYGZsq{}} \PYG{p}{:} \PYG{n}{index} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}} \PYG{p}{:} \PYG{n}{hv}\PYG{p}{\PYGZcb{}}
+        \PYG{n}{df} \PYG{o}{=} \PYG{n}{df}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{row\PYGZus{}dict}\PYG{p}{,} \PYG{n}{ignore\PYGZus{}index} \PYG{o}{=} \PYG{k+kc}{True}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{df}
+
+
+
+\PYG{n}{hv\PYGZus{}history} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}\PYG{n}{columns}\PYG{o}{=}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}iteration\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}}\PYG{p}{))}
+\PYG{k}{for} \PYG{n}{study} \PYG{o+ow}{in} \PYG{n}{studies}\PYG{p}{:}
+    \PYG{n}{hv\PYGZus{}history} \PYG{o}{=} \PYG{n}{hv\PYGZus{}history}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{hv\PYGZus{}history\PYGZus{}to\PYGZus{}df}\PYG{p}{(}\PYG{n}{study}\PYG{p}{))}
+\PYG{n}{hv\PYGZus{}mean\PYGZus{}history} \PYG{o}{=} \PYG{n}{hv\PYGZus{}history}\PYG{o}{.}\PYG{n}{groupby}\PYG{p}{([}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}iteration\PYGZsq{}}\PYG{p}{])}\PYG{o}{.}\PYG{n}{mean}\PYG{p}{()}
+\PYG{c+c1}{\PYGZsh{} print(hv\PYGZus{}history.head())}
+\PYG{n}{sns}\PYG{o}{.}\PYG{n}{set\PYGZus{}theme}\PYG{p}{(}\PYG{n}{style}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}darkgrid\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{()}
+\PYG{n}{lines} \PYG{o}{=}\PYG{n}{sns}\PYG{o}{.}\PYG{n}{lineplot}\PYG{p}{(}
+    \PYG{n}{data} \PYG{o}{=} \PYG{n}{hv\PYGZus{}mean\PYGZus{}history}\PYG{p}{,}
+    \PYG{n}{x} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}iteration\PYGZsq{}}\PYG{p}{,}
+    \PYG{n}{y} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}}\PYG{p}{,}
+    \PYG{n}{hue}\PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{,}
+    \PYG{n}{palette} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}bright\PYGZsq{}}
+
+\PYG{p}{)}
+\PYG{n}{lines}\PYG{o}{.}\PYG{n}{set}\PYG{p}{(}\PYG{n}{xlabel}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Iterations\PYGZdq{}}\PYG{p}{,} \PYG{n}{ylabel}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}Mean Hypervolume\PYGZdq{}}\PYG{p}{,} \PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}

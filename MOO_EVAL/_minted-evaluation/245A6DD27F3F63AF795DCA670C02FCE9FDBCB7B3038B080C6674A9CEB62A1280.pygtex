@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{pareto\PYGZus{}front\PYGZus{}df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}\PYG{n}{columns}\PYG{o}{=}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Sampler\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Seed\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}PCC\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}Flops\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}Front Rank\PYGZsq{}}\PYG{p}{))}
+
+\PYG{c+c1}{\PYGZsh{} sns.color\PYGZus{}palette(\PYGZdq{}flare\PYGZdq{}, as\PYGZus{}cmap=True)}
+
+\PYG{k}{for} \PYG{n}{study} \PYG{o+ow}{in} \PYG{n}{studies}\PYG{p}{:}
+    \PYG{k}{for} \PYG{n}{rank}\PYG{p}{,} \PYG{n}{trial} \PYG{o+ow}{in} \PYG{n}{study}\PYG{o}{.}\PYG{n}{ranked\PYGZus{}fronts}\PYG{p}{:}
+
+        \PYG{n}{row\PYGZus{}dict} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}Sampler\PYGZsq{}}\PYG{p}{:} \PYG{n}{study}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}Seed\PYGZsq{}} \PYG{p}{:} \PYG{n}{study}\PYG{o}{.}\PYG{n}{seed}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}PCC\PYGZsq{}}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{o}{\PYGZhy{}} \PYG{n}{trial}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}Flops\PYGZsq{}}\PYG{p}{:} \PYG{n}{trial}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}Front Rank\PYGZsq{}}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{rank}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZcb{}}
+        \PYG{n}{pareto\PYGZus{}front\PYGZus{}df} \PYG{o}{=} \PYG{n}{pareto\PYGZus{}front\PYGZus{}df}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{row\PYGZus{}dict}\PYG{p}{,} \PYG{n}{ignore\PYGZus{}index} \PYG{o}{=} \PYG{k+kc}{True}\PYG{p}{)}
+
+\PYG{n}{sns}\PYG{o}{.}\PYG{n}{relplot}\PYG{p}{(}\PYG{n}{data} \PYG{o}{=} \PYG{n}{pareto\PYGZus{}front\PYGZus{}df}\PYG{p}{,} \PYG{n}{x}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}PCC\PYGZsq{}}\PYG{p}{,} \PYG{n}{y}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Flops\PYGZsq{}}\PYG{p}{,} \PYG{n}{alpha} \PYG{o}{=} \PYG{l+m+mf}{0.8}\PYG{p}{,} \PYG{n}{row} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Seed\PYGZsq{}}\PYG{p}{,} \PYG{n}{col} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Sampler\PYGZsq{}}\PYG{p}{,} \PYG{n}{hue} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}Front Rank\PYGZsq{}}\PYG{p}{,} \PYG{n}{palette} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}rocket\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}

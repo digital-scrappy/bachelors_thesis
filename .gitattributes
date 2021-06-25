@@ -1,0 +1,3 @@
+*.mt linguist-detectable=false
+*.src linguist-detectable=false
+*.hter linguist-detectable=false

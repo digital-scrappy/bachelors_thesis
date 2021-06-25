@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{sum\PYGZus{}hv} \PYG{o}{=} \PYG{n}{defaultdict}\PYG{p}{(}\PYG{n+nb}{list}\PYG{p}{)}
+\PYG{k}{for} \PYG{n}{study} \PYG{o+ow}{in} \PYG{n}{studies}\PYG{p}{:}
+    \PYG{c+c1}{\PYGZsh{} print(study)}
+    \PYG{n}{study}\PYG{o}{.}\PYG{n}{non\PYGZus{}dominated\PYGZus{}sorting}\PYG{p}{()}
+    \PYG{n}{study}\PYG{o}{.}\PYG{n}{calculate\PYGZus{}hv\PYGZus{}history}\PYG{p}{(}\PYG{n}{reference\PYGZus{}point}\PYG{p}{)}
+    \PYG{n}{study}\PYG{o}{.}\PYG{n}{calculate\PYGZus{}hv}\PYG{p}{(}\PYG{n}{reference\PYGZus{}point}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} print(study.sampler\PYGZus{}type)}
+    \PYG{c+c1}{\PYGZsh{} print(study.hv)}
+    \PYG{n}{sum\PYGZus{}hv}\PYG{p}{[}\PYG{n}{study}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type}\PYG{p}{]}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{study}\PYG{o}{.}\PYG{n}{hv}\PYG{p}{)}
+\PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n}{sum\PYGZus{}hv}\PYG{o}{.}\PYG{n}{keys}\PYG{p}{():}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)}
+    \PYG{n+nb}{print}\PYG{p}{((}\PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{sum\PYGZus{}hv}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{o}{/} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{sum\PYGZus{}hv}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])))}
+\end{Verbatim}

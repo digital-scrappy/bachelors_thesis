@@ -1,0 +1,16 @@
+* Requirements
+The requirements can be installed using poetry (recommended) or using the requirements.txt file.
+Additionally pytorch has to be installed manually according to cpu or gpu usage and cuda version.
+
+* Adding additional data or changing the data used
+Place a folder containing the data in the =data/= folder (mirroring the structure of the already existing files) and run the =concat_data.py= script from inside the =utils= folder.
+Then run the following line of bash from within the =utils= folder.
+#+begin_src bash
+cat ../data/combined_data/train.src ../data/combined_data/train.mt > ../data/combined_data/train.src-trg
+#+end_src
+
+Then execute the =train_bpe_model.py= script from within the =utils= folder.
+
+* Running the Experiment script
+Change the respective variables in the =main()= function according to your requirements.
+run =python experiment.py= from inside the root of the repository

@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{scipy.stats}
+\PYG{n}{hypervolume\PYGZus{}dict} \PYG{o}{=} \PYG{n}{defaultdict}\PYG{p}{(}\PYG{n+nb}{list}\PYG{p}{)}
+\PYG{k}{for} \PYG{n}{study} \PYG{o+ow}{in} \PYG{n}{studies}\PYG{p}{:}
+    \PYG{k}{if} \PYG{n}{study}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type} \PYG{o}{!=} \PYG{l+s+s1}{\PYGZsq{}TPESampler\PYGZsq{}}\PYG{p}{:}
+        \PYG{n}{hypervolume\PYGZus{}dict}\PYG{p}{[}\PYG{n}{study}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type}\PYG{p}{]}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{study}\PYG{o}{.}\PYG{n}{hv}\PYG{p}{)}
+\PYG{n}{kruskal} \PYG{o}{=} \PYG{n}{scipy}\PYG{o}{.}\PYG{n}{stats}\PYG{o}{.}\PYG{n}{kruskal}\PYG{p}{(}\PYG{o}{*}\PYG{p}{[} \PYG{n}{hypervolume\PYGZus{}dict}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n}{hypervolume\PYGZus{}dict}\PYG{o}{.}\PYG{n}{keys}\PYG{p}{()])}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{kruskal}\PYG{p}{)}
+\end{Verbatim}

@@ -1,0 +1,30 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{base\PYGZus{}path} \PYG{o}{=} \PYG{n}{Path}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}/home/jakob/src/siamese\PYGZus{}attention\PYGZus{}thesis/studies/\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{seeds} \PYG{o}{=} \PYG{p}{[}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)]}
+\PYG{n}{sampler\PYGZus{}names} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}RandomSampler\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}MOTPESampler\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}NSGAIISampler\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}TPESampler\PYGZdq{}}\PYG{p}{]}
+\PYG{n}{multi} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}RandomSampler\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}MOTPESampler\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}NSGAIISampler\PYGZdq{}}\PYG{p}{]}
+\PYG{n}{trial\PYGZus{}number} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}100\PYGZdq{}}
+
+
+
+
+\PYG{n}{all\PYGZus{}test\PYGZus{}objectives} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{all\PYGZus{}random\PYGZus{}objectives} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{studies} \PYG{o}{=} \PYG{p}{[]}
+\PYG{k}{for} \PYG{n}{seed} \PYG{o+ow}{in} \PYG{n}{seeds}\PYG{p}{:}
+    \PYG{k}{for} \PYG{n}{sampler} \PYG{o+ow}{in} \PYG{n}{sampler\PYGZus{}names}\PYG{p}{:}
+            \PYG{n}{study\PYGZus{}name} \PYG{o}{=} \PYG{n}{seed} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{sampler} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZdq{}} \PYG{o}{+} \PYG{n}{trial\PYGZus{}number} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}.pkl\PYGZdq{}}
+            \PYG{n}{study\PYGZus{}path} \PYG{o}{=} \PYG{n}{base\PYGZus{}path} \PYG{o}{/} \PYG{n}{study\PYGZus{}name}
+
+            \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{study\PYGZus{}path}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}rb\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{handle}\PYG{p}{:}
+                \PYG{n}{study} \PYG{o}{=} \PYG{n}{pickle}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{handle}\PYG{p}{)}
+                \PYG{n}{trials} \PYG{o}{=} \PYG{n}{study}\PYG{o}{.}\PYG{n}{trials}
+                \PYG{n}{moo} \PYG{o}{=} \PYG{k+kc}{True} \PYG{k}{if} \PYG{n}{sampler} \PYG{o+ow}{in} \PYG{n}{multi} \PYG{k}{else} \PYG{k+kc}{False}
+                \PYG{n}{objectives} \PYG{o}{=} \PYG{n}{get\PYGZus{}objectives}\PYG{p}{(}\PYG{n}{trials}\PYG{p}{,} \PYG{n}{moo}\PYG{p}{)}
+                \PYG{k}{if} \PYG{n}{sampler} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}RandomSampler\PYGZsq{}}\PYG{p}{:}
+                    \PYG{n}{all\PYGZus{}random\PYGZus{}objectives} \PYG{o}{+=} \PYG{n}{objectives}
+
+
+                \PYG{n}{all\PYGZus{}test\PYGZus{}objectives} \PYG{o}{+=} \PYG{n}{objectives}
+                \PYG{n}{studies}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{my\PYGZus{}study}\PYG{p}{(}\PYG{n}{seed}\PYG{p}{,} \PYG{n}{sampler}\PYG{p}{,} \PYG{n}{trials}\PYG{p}{,} \PYG{n}{objectives}\PYG{p}{,} \PYG{n}{study}\PYG{p}{))}
+\end{Verbatim}

@@ -1,0 +1,77 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{get\PYGZus{}objectives}\PYG{p}{(}\PYG{n}{trials}\PYG{p}{,} \PYG{n}{MOO} \PYG{o}{=} \PYG{k+kc}{True} \PYG{p}{):}
+    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}takes a list of trials and returns their objective values note that the Corr gets inverted\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+    \PYG{n}{objective\PYGZus{}list} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{k}{for} \PYG{n}{trial} \PYG{o+ow}{in} \PYG{n}{trials}\PYG{p}{:}
+        \PYG{k}{if} \PYG{n}{MOO}\PYG{p}{:}
+            \PYG{n}{trial\PYGZus{}objectives} \PYG{o}{=} \PYG{p}{[} \PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{n}{trial}\PYG{o}{.}\PYG{n}{user\PYGZus{}attrs}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}test\PYGZus{}pearson\PYGZsq{}}\PYG{p}{],} \PYG{n}{trial}\PYG{o}{.}\PYG{n}{values}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]]}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n}{trial\PYGZus{}objectives} \PYG{o}{=} \PYG{p}{[} \PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{n}{trial}\PYG{o}{.}\PYG{n}{user\PYGZus{}attrs}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}test\PYGZus{}pearson\PYGZsq{}}\PYG{p}{],} \PYG{n}{trial}\PYG{o}{.}\PYG{n}{user\PYGZus{}attrs}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}Flops\PYGZsq{}}\PYG{p}{]]}
+
+        \PYG{n}{objective\PYGZus{}list}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{trial\PYGZus{}objectives}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{objective\PYGZus{}list}
+
+\PYG{k}{class} \PYG{n+nc}{my\PYGZus{}study}\PYG{p}{:}
+
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{seed}\PYG{p}{,} \PYG{n}{sampler\PYGZus{}type}\PYG{p}{,} \PYG{n}{trials}\PYG{p}{,} \PYG{n}{objectives}\PYG{p}{,} \PYG{n}{study}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{seed} \PYG{o}{=} \PYG{n}{seed}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type} \PYG{o}{=} \PYG{n}{sampler\PYGZus{}type}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{trials} \PYG{o}{=} \PYG{n}{trials}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{objective\PYGZus{}list} \PYG{o}{=} \PYG{n}{objectives}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{name} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{seed} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}\PYGZus{}\PYGZsq{}} \PYG{o}{+} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{optuna\PYGZus{}study} \PYG{o}{=} \PYG{n}{study}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ranked\PYGZus{}fronts} \PYG{o}{=} \PYG{p}{[]}
+
+
+
+
+
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{fronts} \PYG{o}{=} \PYG{k+kc}{None}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pareto\PYGZus{}optimal\PYGZus{}front} \PYG{o}{=} \PYG{k+kc}{None}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hv} \PYG{o}{=} \PYG{k+kc}{None}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hv\PYGZus{}history} \PYG{o}{=} \PYG{p}{[]}
+
+    \PYG{k}{def} \PYG{n+nf+fm}{\PYGZus{}\PYGZus{}repr\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{k}{return} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{name}
+
+    \PYG{k}{def} \PYG{n+nf}{non\PYGZus{}dominated\PYGZus{}sorting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{c+c1}{\PYGZsh{} print(self.objective\PYGZus{}list)}
+
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{fronts} \PYG{o}{=} \PYG{n}{pygmo}\PYG{o}{.}\PYG{n}{fast\PYGZus{}non\PYGZus{}dominated\PYGZus{}sorting}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{objective\PYGZus{}list}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]}
+        \PYG{k}{for} \PYG{n}{index}\PYG{p}{,} \PYG{n}{front} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{fronts}\PYG{p}{):}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{ranked\PYGZus{}fronts} \PYG{o}{+=} \PYG{p}{[} \PYG{p}{(}\PYG{n}{index}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{objective\PYGZus{}list}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n}{front}\PYG{p}{]}
+
+
+
+
+
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pareto\PYGZus{}optimal\PYGZus{}front} \PYG{o}{=} \PYG{p}{[}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{objective\PYGZus{}list}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{fronts}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]]}
+        \PYG{c+c1}{\PYGZsh{} print(self.pareto\PYGZus{}optimal\PYGZus{}front)}
+
+        \PYG{c+c1}{\PYGZsh{} self.dev\PYGZus{}fronts = pygmo.fast\PYGZus{}non\PYGZus{}dominated\PYGZus{}sorting(self.dev\PYGZus{}objective\PYGZus{}list)[0]}
+
+        \PYG{c+c1}{\PYGZsh{} self.dev\PYGZus{}pareto\PYGZus{}optimal\PYGZus{}front = [self.dev\PYGZus{}objective\PYGZus{}list[i] for i in self.dev\PYGZus{}fronts[0]]}
+    \PYG{k}{def} \PYG{n+nf}{calculate\PYGZus{}hv\PYGZus{}history}\PYG{p}{(}\PYG{n+nb+bp}{self} \PYG{p}{,} \PYG{n}{ref\PYGZus{}point}\PYG{p}{):}
+
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{objective\PYGZus{}list}\PYG{p}{)):}
+            \PYG{k}{if} \PYG{n}{i} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{:}
+                \PYG{n}{pareto\PYGZus{}front} \PYG{o}{=}\PYG{p}{[}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{objective\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]]}
+            \PYG{k}{else}\PYG{p}{:}
+                \PYG{n}{trial\PYGZus{}subset} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{objective\PYGZus{}list}\PYG{p}{[:}\PYG{n}{i}\PYG{p}{]}
+                \PYG{n}{fronts} \PYG{o}{=} \PYG{n}{pygmo}\PYG{o}{.}\PYG{n}{fast\PYGZus{}non\PYGZus{}dominated\PYGZus{}sorting}\PYG{p}{(}\PYG{n}{trial\PYGZus{}subset}\PYG{p}{)[}\PYG{l+m+mi}{0}\PYG{p}{]}
+                \PYG{n}{pareto\PYGZus{}front} \PYG{o}{=} \PYG{p}{[}\PYG{n}{trial\PYGZus{}subset}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n}{fronts}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]]}
+            \PYG{n}{hv\PYGZus{}i} \PYG{o}{=} \PYG{n}{pygmo}\PYG{o}{.}\PYG{n}{hypervolume}\PYG{p}{(}\PYG{n}{pareto\PYGZus{}front}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hv\PYGZus{}history}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{hv\PYGZus{}i}\PYG{o}{.}\PYG{n}{compute}\PYG{p}{(}\PYG{n}{ref\PYGZus{}point}\PYG{p}{))}
+
+
+
+
+    \PYG{k}{def} \PYG{n+nf}{calculate\PYGZus{}hv}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{ref\PYGZus{}point}\PYG{p}{):}
+        \PYG{n}{hv} \PYG{o}{=} \PYG{n}{pygmo}\PYG{o}{.}\PYG{n}{hypervolume}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pareto\PYGZus{}optimal\PYGZus{}front}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hv} \PYG{o}{=} \PYG{n}{hv}\PYG{o}{.}\PYG{n}{compute}\PYG{p}{(}\PYG{n}{ref\PYGZus{}point}\PYG{p}{)}
+
+
+        \PYG{c+c1}{\PYGZsh{} self.dev\PYGZus{}hv = pygmo.hypervolume(self.dev\PYGZus{}pareto\PYGZus{}optimal\PYGZus{}front)}
+        \PYG{c+c1}{\PYGZsh{} print(f\PYGZdq{}dev:\PYGZob{}self.dev\PYGZus{}hv.compute(dev\PYGZus{}ref\PYGZus{}point)\PYGZcb{}\PYGZdq{})}
+\end{Verbatim}

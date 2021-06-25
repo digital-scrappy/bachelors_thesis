@@ -1,0 +1,21 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{hypervol\PYGZus{}df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(}\PYG{n}{columns}\PYG{o}{=}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}}\PYG{p}{))}
+
+\PYG{k}{for} \PYG{n}{study} \PYG{o+ow}{in} \PYG{n}{studies}\PYG{p}{:}
+
+    \PYG{n}{row\PYGZus{}dict} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{:} \PYG{n}{study}\PYG{o}{.}\PYG{n}{sampler\PYGZus{}type}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}} \PYG{p}{:} \PYG{n}{study}\PYG{o}{.}\PYG{n}{hv}\PYG{p}{\PYGZcb{}}
+    \PYG{n}{hypervol\PYGZus{}df} \PYG{o}{=} \PYG{n}{hypervol\PYGZus{}df}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{row\PYGZus{}dict}\PYG{p}{,} \PYG{n}{ignore\PYGZus{}index} \PYG{o}{=} \PYG{k+kc}{True}\PYG{p}{)}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{()}
+
+
+\PYG{n}{fig} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{121}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Violin plots of the different Samplers\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{sns}\PYG{o}{.}\PYG{n}{violinplot}\PYG{p}{(}\PYG{n}{data}\PYG{o}{=}\PYG{n}{hypervol\PYGZus{}df}\PYG{p}{,}\PYG{n}{x} \PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{,} \PYG{n}{y} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}}\PYG{p}{,} \PYG{n}{cut} \PYG{o}{=} \PYG{l+m+mi}{0} \PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Hypervolume\PYGZsq{}}\PYG{p}{);} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Algorithm\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{122}\PYG{p}{,} \PYG{n}{title}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}Box plots of of the different Samplers\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{sns}\PYG{o}{.}\PYG{n}{boxplot}\PYG{p}{(}\PYG{n}{data}\PYG{o}{=}\PYG{n}{hypervol\PYGZus{}df}\PYG{p}{,} \PYG{n}{x}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}sampler\PYGZus{}type\PYGZsq{}}\PYG{p}{,}\PYG{n}{y}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}hypervolume\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Hypervolume\PYGZsq{}}\PYG{p}{);} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}Algorithm\PYGZsq{}}\PYG{p}{);}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}
