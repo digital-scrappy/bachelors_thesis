@@ -14,3 +14,6 @@ Then execute the =train_bpe_model.py= script from within the =utils= folder.
 * Running the Experiment script
 Change the respective variables in the =main()= function according to your requirements.
 run =python experiment.py= from inside the root of the repository
+
+* Evaluation
+The code for the evaluation can be found in the =MOO_eval= folder. Github should render the markdown of the literate programming =evaluation.org= file properly when one clicks on it. Otherwise all the code is available in the =evaluation.py= file.
