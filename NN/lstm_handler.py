@@ -2,7 +2,13 @@
 from collections import Counter
 
 def lstm_flop_count(inputs, outputs):
-    '''handler for counting the FLOPS of the LSTM cell calculations are based on the pytorch documentation'''
+    '''handler for counting the FLOPS of the LSTM cell calculations are based on the pytorch documentation
+
+    inputs: Torch.C_value arrays containing the dimensions of the input
+    outputs: Torch.C_value arrays containing the dimensions of the output
+
+    Returns: the amount of flops necessary to forward propagate the input through the lstm cell
+'''
 
     input_shape =inputs[0].type().sizes()
     output_shape = outputs[0].type().sizes()
@@ -25,5 +31,3 @@ def lstm_flop_count(inputs, outputs):
     flops *= 2
 
     return Counter({"lstm":int(flops)})
-
-
