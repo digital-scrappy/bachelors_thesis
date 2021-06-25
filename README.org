@@ -16,4 +16,4 @@ Change the respective variables in the =main()= function according to your requi
 run =python experiment.py= from inside the root of the repository
 
 * Evaluation
-The code for the evaluation can be found in the =MOO_eval= folder. Github should render the markdown of the literate programming =evaluation.org= file properly when one clicks on it. Otherwise all the code is available in the =evaluation.py= file.
+The code for the evaluation can be found in the =MOO_EVAL= folder. Github should render the markdown of the literate programming =evaluation.org= file properly when one clicks on it. Otherwise all the code is available in the =evaluation.py= file.
